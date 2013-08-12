@@ -27,7 +27,7 @@ describe("Backbone.Model", function(){
       expect( typeof this.Animal ).to.equal('function');
     });
 
-    it("should return an object that delegates properties to Backbone.Model", function(){
+    it("should return constructor whos prototype delegates properties to Backbone.Model.prototype", function(){
       expect( Backbone.Model.prototype.isPrototypeOf(this.Animal.prototype) ).to.be(true);
     });
 
@@ -39,10 +39,13 @@ describe("Backbone.Model", function(){
 
       it("should return a Constructor", function(){
         expect( typeof this.Human ).to.equal('function');
+        expect( this.Human.prototype.constructor ).to.be(this.Human);
       });
 
       it("should return an object that delegates properties to Animal", function(){
         expect( this.Animal.prototype.isPrototypeOf(this.Human.prototype) ).to.be(true);
+        expect( new this.Animal instanceof this.Animal).to.be(true);
+        expect( new this.Human instanceof this.Animal).to.be(true);
       });
 
     });
