@@ -33,7 +33,7 @@ describe("Backbone.Model", function(){
         this.Human = this.Animal.extend();
       });
 
-      it("should return an object that delegates properties to Backbone.Model", function(){
+      it("should return an object that delegates properties to Animal", function(){
         expect( this.Animal.prototype.isPrototypeOf(this.Human.prototype) ).to.be(true);
       });
 
