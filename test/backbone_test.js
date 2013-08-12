@@ -14,7 +14,7 @@ describe("Backbone.Model", function(){
 
   it("should be a Function", function(){
 
-    expect(typeof Backbone.Model).to.equal('Function');
+    expect(typeof Backbone.Model).to.equal('function');
 
   });
 
