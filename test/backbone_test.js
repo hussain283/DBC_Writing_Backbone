@@ -57,7 +57,10 @@ describe("Backbone.Model", function(){
       this.Animal = Backbone.Model.extend();
     });
 
-    it("should inherit from")
+    it("should take an object and extend it's self with it", function(){
+      var cat = new this.Animal({hairColor: 'brown'});
+      expect(cat.hairColor).to.equal('brown');
+    });
   });
 
 });
