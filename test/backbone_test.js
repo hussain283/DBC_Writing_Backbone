@@ -17,20 +17,28 @@ describe("Backbone.Model", function(){
 
   });
 
-  describe(".extend", function(){
+  describe(".extend()", function(){
 
     beforeEach(function(){
       this.Animal = Backbone.Model.extend();
+    });
+
+    it("should return a Constructor", function(){
+      expect( typeof this.Animal ).to.equal('function');
     });
 
     it("should return an object that delegates properties to Backbone.Model", function(){
       expect( Backbone.Model.prototype.isPrototypeOf(this.Animal.prototype) ).to.be(true);
     });
 
-    describe(".extend", function(){
+    describe(".extend()", function(){
 
       beforeEach(function(){
         this.Human = this.Animal.extend();
+      });
+
+      it("should return a Constructor", function(){
+        expect( typeof this.Human ).to.equal('function');
       });
 
       it("should return an object that delegates properties to Animal", function(){
@@ -39,6 +47,14 @@ describe("Backbone.Model", function(){
 
     });
 
+  });
+
+  describe("new Animal", function(){
+    beforeEach(function(){
+      this.Animal = Backbone.Model.extend();
+    });
+
+    it("should inherit from")
   });
 
 });
