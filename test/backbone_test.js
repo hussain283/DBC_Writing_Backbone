@@ -25,10 +25,12 @@ describe("Backbone.Model", function(){
 
     it("should return a Constructor", function(){
       expect( typeof this.Animal ).to.equal('function');
+      expect( this.Animal.prototype.constructor ).to.be(this.Animal);
     });
 
     it("should return constructor whos prototype delegates properties to Backbone.Model.prototype", function(){
       expect( Backbone.Model.prototype.isPrototypeOf(this.Animal.prototype) ).to.be(true);
+      expect( new this.Animal instanceof this.Animal).to.be(true);
     });
 
     describe(".extend()", function(){
