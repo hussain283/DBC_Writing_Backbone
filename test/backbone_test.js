@@ -100,10 +100,29 @@ describe("Backbone.Model", function(){
       var cat = new Animal();
       cat.on('change:sex', callback);
       cat.set('sex','purple');
-      expect( calls.length ).to.equal(1);
+      expect( calls.length ).to.be(1);
       expect( calls[0][0] ).to.be(cat);
       expect( calls[0][1] ).to.equal('change:sex');
       expect( calls[0][2] ).to.eql({ sex: [ undefined, 'purple' ] });
+    });
+  });
+
+  describe('#on &, #fire', function(){
+    it("should register the given callback for the given event and call that callback when that event is fired", function(){
+      var Animal = Backbone.Model.extend();
+      var cat = new Animal();
+
+      var calls = [];
+      function callback(event, data){
+        calls.push([this, event, data]);
+      }
+      cat.on('poop', callback);
+      expect( calls.length ).to.be(0);
+      cat.fire('poop', {smellLevel:85});
+      expect( calls.length ).to.be(1);
+      expect( calls[0][0]  ).to.be(cat);
+      expect( calls[0][1]  ).to.equal('poop');
+      expect( calls[0][2]  ).to.eql({smellLevel:85});
     });
   });
 
