@@ -36,7 +36,16 @@ describe("Backbone.Model", function(){
     it("should take an object and copy all of it's properties to the prototype of the new Model", function(){
       var Animal = Backbone.Model.extend({numberOfLegs: 4});
       expect( (new Animal).numberOfLegs ).to.equal(4);
-    })
+    });
+
+    it("should share functions with Backbome.Model.prototype", function(){
+      var Animal = Backbone.Model.extend({numberOfLegs: 4});
+      var cat = new Animal;
+      expect( cat.get ).to.be( Backbone.Model.prototype.get );
+      expect( cat.set ).to.be( Backbone.Model.prototype.set );
+      expect( cat.on ).to.be( Backbone.Model.prototype.on );
+      expect( cat.fire ).to.be( Backbone.Model.prototype.fire );
+    });
 
     describe(".extend()", function(){
 
@@ -109,30 +118,84 @@ describe("Backbone.Model", function(){
     });
   });
 
+  function createCallback() {
+    function callback(event, data){
+      callback.calls.push([this, event, data]);
+    }
+    callback.calls = [];
+    return callback;
+  }
+
   describe('#on &, #fire', function(){
     it("should register the given callback for the given event and call that callback when that event is fired", function(){
       var Animal = Backbone.Model.extend();
       var cat = new Animal();
 
-      var calls = [];
-      function callback(event, data){
-        calls.push([this, event, data]);
-      }
+      var  poop_callback0 = createCallback();
+      var  poop_callback1 = createCallback();
+      var vomit_callback0 = createCallback();
+      var vomit_callback1 = createCallback();
 
-      cat.on('poop', callback);
-      expect( calls.length ).to.be(0);
+      cat.on('poop',  poop_callback0);
+      cat.on('poop',  poop_callback1);
+      cat.on('vomit', vomit_callback0);
+      cat.on('vomit', vomit_callback1);
+
+      expect(  poop_callback0.calls.length ).to.be(0);
+      expect(  poop_callback1.calls.length ).to.be(0);
+      expect( vomit_callback0.calls.length ).to.be(0);
+      expect( vomit_callback1.calls.length ).to.be(0);
 
       cat.fire('poop', {smellLevel:85});
-      expect( calls.length ).to.be(1);
-      expect( calls[0][0]  ).to.be(cat);
-      expect( calls[0][1]  ).to.equal('poop');
-      expect( calls[0][2]  ).to.eql({smellLevel:85});
+
+      expect(  poop_callback0.calls.length ).to.be(1);
+      expect(  poop_callback1.calls.length ).to.be(1);
+      expect( vomit_callback0.calls.length ).to.be(0);
+      expect( vomit_callback1.calls.length ).to.be(0);
+
+      expect( poop_callback0.calls.length ).to.be(1);
+      expect( poop_callback0.calls[0][0]  ).to.be(cat);
+      expect( poop_callback0.calls[0][1]  ).to.equal('poop');
+      expect( poop_callback0.calls[0][2]  ).to.eql({smellLevel:85});
+
+      expect( poop_callback1.calls.length ).to.be(1);
+      expect( poop_callback1.calls[0][0]  ).to.be(cat);
+      expect( poop_callback1.calls[0][1]  ).to.equal('poop');
+      expect( poop_callback1.calls[0][2]  ).to.eql({smellLevel:85});
 
       cat.fire('poop', {smellLevel:96});
-      expect( calls.length ).to.be(2);
-      expect( calls[1][0]  ).to.be(cat);
-      expect( calls[1][1]  ).to.equal('poop');
-      expect( calls[1][2]  ).to.eql({smellLevel:96});
+
+      expect(  poop_callback0.calls.length ).to.be(2);
+      expect(  poop_callback1.calls.length ).to.be(2);
+      expect( vomit_callback0.calls.length ).to.be(0);
+      expect( vomit_callback1.calls.length ).to.be(0);
+
+      expect( poop_callback0.calls.length ).to.be(2);
+      expect( poop_callback0.calls[1][0]  ).to.be(cat);
+      expect( poop_callback0.calls[1][1]  ).to.equal('poop');
+      expect( poop_callback0.calls[1][2]  ).to.eql({smellLevel:96});
+
+      expect( poop_callback1.calls.length ).to.be(2);
+      expect( poop_callback1.calls[1][0]  ).to.be(cat);
+      expect( poop_callback1.calls[1][1]  ).to.equal('poop');
+      expect( poop_callback1.calls[1][2]  ).to.eql({smellLevel:96});
+
+      cat.fire('vomit', {smellLevel:12});
+
+      expect(  poop_callback0.calls.length ).to.be(2);
+      expect(  poop_callback1.calls.length ).to.be(2);
+      expect( vomit_callback0.calls.length ).to.be(1);
+      expect( vomit_callback1.calls.length ).to.be(1);
+
+      expect( vomit_callback0.calls.length ).to.be(1);
+      expect( vomit_callback0.calls[0][0]  ).to.be(cat);
+      expect( vomit_callback0.calls[0][1]  ).to.equal('vomit');
+      expect( vomit_callback0.calls[0][2]  ).to.eql({smellLevel:12});
+
+      expect( vomit_callback1.calls.length ).to.be(1);
+      expect( vomit_callback1.calls[0][0]  ).to.be(cat);
+      expect( vomit_callback1.calls[0][1]  ).to.equal('vomit');
+      expect( vomit_callback1.calls[0][2]  ).to.eql({smellLevel:12});
     });
   });
 
