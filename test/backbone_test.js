@@ -116,13 +116,21 @@ describe("Backbone.Model", function(){
       function callback(event, data){
         calls.push([this, event, data]);
       }
+
       cat.on('poop', callback);
       expect( calls.length ).to.be(0);
+
       cat.fire('poop', {smellLevel:85});
       expect( calls.length ).to.be(1);
       expect( calls[0][0]  ).to.be(cat);
       expect( calls[0][1]  ).to.equal('poop');
       expect( calls[0][2]  ).to.eql({smellLevel:85});
+
+      cat.fire('poop', {smellLevel:96});
+      expect( calls.length ).to.be(2);
+      expect( calls[1][0]  ).to.be(cat);
+      expect( calls[1][1]  ).to.equal('poop');
+      expect( calls[1][2]  ).to.eql({smellLevel:96});
     });
   });
 
