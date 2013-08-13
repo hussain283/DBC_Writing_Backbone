@@ -74,7 +74,9 @@ describe("Backbone.Model", function(){
   describe("#get", function(){
     it("should retrieve the value of the property given", function(){
       var Animal = Backbone.Model.extend();
-
+      var cat = new Animal({sex:'m', color:'red'});
+      expect( cat.get('sex') ).to.equal('m');
+      expect( cat.get('color') ).to.equal('red');
     });
   })
 
