@@ -108,5 +108,3 @@ describe("Backbone.Model", function(){
   });
 
 });
- [ 'change:sex', { sex: [ undefined, 'purple' ] } ]
- [ 'change:sex', { sex: [ undefined, 'purple' ] } ]
