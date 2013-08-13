@@ -33,6 +33,11 @@ describe("Backbone.Model", function(){
       expect( new this.Animal instanceof this.Animal).to.be(true);
     });
 
+    it("should take an object and copy all of it's properties to the prototype of the new Model", function(){
+      var Animal = Backbone.Model.extend({numberOfLegs: 4});
+      expect( (new Animal).numberOfLegs ).to.equal(4);
+    })
+
     describe(".extend()", function(){
 
       beforeEach(function(){
@@ -63,6 +68,14 @@ describe("Backbone.Model", function(){
       var cat = new this.Animal({hairColor: 'brown'});
       expect(cat.hairColor).to.equal('brown');
     });
+
   });
+
+  describe("#get", function(){
+    it("should retrieve the value of the property given", function(){
+      var Animal = Backbone.Model.extend();
+
+    });
+  })
 
 });
