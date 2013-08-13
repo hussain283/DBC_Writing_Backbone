@@ -93,7 +93,9 @@ describe("Backbone.Model", function(){
     it("should fire a 'change:#{property_name}' event", function(){
       var calls = [];
       function callback(event, data){
+        debugger
         calls.push([this, event, data]);
+
       }
 
       var Animal = Backbone.Model.extend();
