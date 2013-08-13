@@ -81,7 +81,7 @@ describe("Backbone.Model", function(){
   });
 
   describe("#set", function(){
-    it("should retrieve the value of the property given", function(){
+    it("should set the value of the given property to the given value", function(){
       var Animal = Backbone.Model.extend();
       var cat = new Animal();
       expect( cat.set('sex', 'f') ).to.be(cat);
@@ -89,10 +89,11 @@ describe("Backbone.Model", function(){
       expect( cat.get('sex') ).to.equal('f');
       expect( cat.get('color') ).to.equal('purple');
     });
+
     it("should fire a 'change:#{property_name}' event", function(){
       var calls = [];
-      function callback(){
-        calls.push([this, [].slice.apply(arguments)]);
+      function callback(event, data){
+        calls.push([this, event, data]);
       }
 
       var Animal = Backbone.Model.extend();
@@ -101,10 +102,11 @@ describe("Backbone.Model", function(){
       cat.set('sex','purple');
       expect( calls.length ).to.equal(1);
       expect( calls[0][0] ).to.be(cat);
-      expect( calls[0][1] ).to.equal(['change:sex','sex','purple']);
-
-
+      expect( calls[0][1] ).to.equal('change:sex');
+      expect( calls[0][2] ).to.eql({ sex: [ undefined, 'purple' ] });
     });
   });
 
 });
+ [ 'change:sex', { sex: [ undefined, 'purple' ] } ]
+ [ 'change:sex', { sex: [ undefined, 'purple' ] } ]
