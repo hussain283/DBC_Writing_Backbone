@@ -78,6 +78,17 @@ describe("Backbone.Model", function(){
       expect( cat.get('sex') ).to.equal('m');
       expect( cat.get('color') ).to.equal('red');
     });
-  })
+  });
+
+  describe("#set", function(){
+    it("should retrieve the value of the property given", function(){
+      var Animal = Backbone.Model.extend();
+      var cat = new Animal();
+      expect( cat.set('sex', 'f') ).to.be(cat);
+      expect( cat.set('color', 'purple') ).to.be(cat);
+      expect( cat.get('sex') ).to.equal('f');
+      expect( cat.get('color') ).to.equal('purple');
+    });
+  });
 
 });
